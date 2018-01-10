@@ -41,7 +41,7 @@ class AllDeks extends Component {
           return (
             <View key={desk}  style={[StylesDeks.containerDeskItem, {backgroundColor: currentDesk.color} ]}>
               <View style={[StylesDeks.deskCenter]}>
-                <Text>Image</Text>
+                <ImageElement imgsource={imageItem}>Image</ImageElement>
               </View>
               <View style={[StylesDeks.blocktext]}>
                 <View style={[StylesDeks.deskCenterLeft]}>

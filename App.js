@@ -1,21 +1,21 @@
 
-import React from 'react';
-import { Platform, StyleSheet, Text, View, StatusBar, Image } from 'react-native';
+import React from 'react'
+import { Platform, StyleSheet, Text, View, StatusBar, Image } from 'react-native'
 
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import { TabNavigator, StackNavigator } from 'react-navigation';
-import { FontAwesome, Ionicons } from 'react-native-fontawesome';
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import { TabNavigator, StackNavigator } from 'react-navigation'
+import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Constants } from 'expo'
 
-import reducers from './reducers';
-import {white, black, purple} from './utils/colors';
+import reducers from './reducers'
+import {white, black, purple} from './utils/colors'
 
 import AllDeks from './components/allDeks'
-import AllCards from './components/allCard';
-import addDesk from './components/addDesk';
-import addData from './components/addData';
-import allCard from './components/allCard';
+import AllCards from './components/allCard'
+import addDesk from './components/addDesk'
+import addData from './components/addData'
+import allCard from './components/allCard'
 
 function StatusBarItem ({backgroundColor, ...props}) {
     return (
@@ -30,12 +30,18 @@ const Menu = TabNavigator({
         screen: AllDeks,
         navigationOptions: {
           tabBarLabel: 'Home',
+          tabBarIcon: ({ tintColor }) => (
+            <Ionicons name={'md-home'} size={17} color={'#FFF'} />
+          ),
         }
     },
     addDesks: {
         screen: addData,
         navigationOptions: {
-            tabBarLabel: 'Add Desk'
+          tabBarLabel: 'Add Desk',
+          tabBarIcon: ({ tintColor }) => (
+            <FontAwesome name={'pencil'} size={17} color={'#FFF'} />
+          ),
         }
     }
 }, {
