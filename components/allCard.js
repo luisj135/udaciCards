@@ -17,8 +17,7 @@ import { white } from '../utils/colors';
 import * as cardsActions from '../actions/cards'
 import * as API from '../utils/api'
 
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { sliderWidth, itemWidth } from '../styles/sliderCard.style';
+import Carousel from 'react-native-snap-carousel';
 
 
 function SubmitBtn ({ onPress }) {
@@ -67,49 +66,16 @@ class AllCard extends Component {
 
   render () {
     const SLIDER_1_FIRST_ITEM = 1;
-    const { slider1ActiveSlide, slider1Ref } = this.state;
     console.log(this.props.navigation.state.params.idDesks)
     console.log(this.state.cardfilter)
 
     return (
-      <View style={styles.exampleContainer}>
-        <Text style={styles.title}>Example 1</Text>
-        <Text style={styles.subtitle}>
-            No momentum | Loop | Autoplay | Parallax | Scale | Opacity | Pagination with tappable dots
-        </Text>
-        <Carousel
-          ref={(c) => { if (!this.state.slider1Ref) { this.setState({ slider1Ref: c }); } }}
-          data={this.state.cardfilter}
-          renderItem={this._renderItemWithParallax}
-          sliderWidth={sliderWidth}
-          itemWidth={itemWidth}
-          hasParallaxImages={true}
-          firstItem={SLIDER_1_FIRST_ITEM}
-          inactiveSlideScale={0.94}
-          inactiveSlideOpacity={0.7}
-          enableMomentum={false}
-          containerCustomStyle={styles.slider}
-          contentContainerCustomStyle={styles.sliderContentContainer}
-          loop={true}
-          loopClonesPerSide={2}
-          autoplay={true}
-          autoplayDelay={500}
-          autoplayInterval={3000}
-          onSnapToItem={(index) => this.setState({ slider1ActiveSlide: index }) }
-        />
-        <Pagination
-          dotsLength={this.state.cardfilter.length}
-          activeDotIndex={slider1ActiveSlide}
-          containerStyle={styles.paginationContainer}
-          dotColor={'rgba(255, 255, 255, 0.92)'}
-          dotStyle={styles.paginationDot}
-          inactiveDotColor={colors.black}
-          inactiveDotOpacity={0.4}
-          inactiveDotScale={0.6}
-          carouselRef={slider1Ref}
-          tappableDots={!!slider1Ref}
-        />
-    </View>
+      <Carousel
+        data={this.state.cardfilter}
+        renderItem={this._renderItem}
+        sliderWidth={this.state.widthSlider}
+        itemWidth={this.state.widthSlider}
+      />
     );
   }
 }
