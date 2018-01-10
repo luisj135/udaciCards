@@ -1,5 +1,5 @@
 {
-  "name": "udaciCards",
+  "name": "udacityProject",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
@@ -21,6 +21,12 @@
   "dependencies": {
     "expo": "^23.0.4",
     "react": "16.0.0",
-    "react-native": "0.50.3"
+    "react-native": "0.50.3",
+    "react-native-fontawesome": "^5.7.0",
+    "react-native-snap-carousel": "^3.5.0",
+    "react-navigation": "^1.0.0-beta.23"
+  },
+  "resolutions": {
+    "react-native/metro-bundler": "0.20.0"
   }
 }
