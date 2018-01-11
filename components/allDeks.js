@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
 
+import {Tile, List, ListItem} from 'react-native-elements';
+
 import { white, black } from '../utils/colors';
 
 import * as desksActions from '../actions/desks'
@@ -116,7 +118,7 @@ const StylesDeks = StyleSheet.create({
       color: '#fff',
     },
     deskItem:{
-      color: '#fff',
+      color: white,
       paddingRight: 5,
       fontWeight: 'bold',
       fontSize: 20,
