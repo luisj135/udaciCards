@@ -53,7 +53,7 @@ class AllDeks extends Component {
               </View>
               <View style={[StylesDeks.blocktext]}>
                 <View style={[StylesDeks.deskCenterLeft]}>
-                  <Text style={[StylesDeks.deskItem, StylesDeks.deskItemNumber]}>{numQuestions}</Text>
+                  <Text style={[StylesDeks.deskItemText, StylesDeks.deskItemNumber]}>{numQuestions}</Text>
                 </View>
                 <View style={[StylesDeks.deskCenterRight]}>
                   <View style={[StylesDeks.deskItem]}>
@@ -115,13 +115,9 @@ const StylesDeks = StyleSheet.create({
     deskRight:{
       flex: 1,
       alignItems: 'flex-end',
-      color: '#fff',
     },
     deskItem:{
-      color: white,
       paddingRight: 5,
-      fontWeight: 'bold',
-      fontSize: 20,
       justifyContent:'flex-start',
       alignItems:'flex-start'
     },

@@ -81,13 +81,9 @@ const StylesDeks = StyleSheet.create({
     deskRight:{
       flex: 1,
       alignItems: 'flex-end',
-      color: '#0000',
     },
     deskItem:{
-      color: black,
       paddingRight: 5,
-      fontWeight: 'bold',
-      fontSize: 20,
       justifyContent:'space-between',
       alignItems:'center',
       width:wp(100)

@@ -58,7 +58,7 @@ export default class SliderEntry extends Component {
                   backgroundColor='#292477'
                   containerViewStyle={[styles.btnform]}
                  />
-            </View>xº
+            </View>
         </TouchableOpacity>
     );
   }
