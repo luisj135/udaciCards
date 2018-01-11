@@ -22,7 +22,7 @@ class ImageElement extends Component {
 
   render() {
     return (
-      <Image source={require(this.state.imgact)} style={styles.image}></Image>
+      <Image source={this.state.imgact} style={styles.image}></Image>
     )
   }
 }

@@ -17,7 +17,10 @@ import { white } from '../utils/colors';
 import * as cardsActions from '../actions/cards'
 import * as API from '../utils/api'
 
-import Carousel from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { sliderWidth, itemWidth } from '../styles/sliderCard.style';
+import CardItem from './cardItem';
+import styles, { colors } from '../styles/index.style';
 
 
 function SubmitBtn ({ onPress }) {
@@ -36,8 +39,11 @@ class AllCard extends Component {
     this.state = {
       cardfilter: [],
       widthSlider: Dimensions.get('window').width,
-      slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
-      slider1Ref: null
+      slider1ActiveSlide: 1,
+      slider1Ref: null,
+      first_item: 1,
+      elementRef: [],
+      title: 'item'
     }
   }
 
@@ -50,56 +56,82 @@ class AllCard extends Component {
         this.setState({
           cardfilter: this.props.desks[item].questions
         });
+        this.setState({
+          elementRef: this.props.desks[item]
+        });
+        this.setState({
+          title: this.props.desks[item].title
+        });
       }
        
     })
+
+    this.setState({
+      slider1ActiveSlide: this.state.first_item
+    });
   }
 
-  _renderItem ({item, index}) {
-    return (
-      <View key={index}  style={[desksStyles.containerDeskItem]}>
-          <Text style={[desksStyles.deskItem]}>{item['question']}</Text>
-          <Ionicons name={'md-arrow-round-forward'} size={17} color={'#FFF'} />
-      </View>
-    )
+  static navigationOptions = ({ navigation }) => {
+    return{
+      title: navigation.state.params.title
+    }
   }
 
+  _renderItemWithParallax ({item, index}, parallaxProps) {
+        return (
+            <CardItem
+              data={item}
+              even={(index + 1) % 2 === 0}
+              parallax={true}
+              parallaxProps={parallaxProps}
+            />
+        );
+    }
+
+  
   render () {
-    const SLIDER_1_FIRST_ITEM = 1;
     console.log(this.props.navigation.state.params.idDesks)
     console.log(this.state.cardfilter)
 
     return (
-      <Carousel
-        data={this.state.cardfilter}
-        renderItem={this._renderItem}
-        sliderWidth={this.state.widthSlider}
-        itemWidth={this.state.widthSlider}
-      />
+      <View style={styles.Container}>
+        <Carousel
+          ref={(c) => { if (!this.state.slider1Ref) { this.setState({ slider1Ref: c }); } }}
+          data={this.state.cardfilter}
+          renderItem={this._renderItemWithParallax}
+          sliderWidth={sliderWidth}
+          itemWidth={itemWidth}
+          hasParallaxImages={true}
+          firstItem={this.state.first_item}
+          inactiveSlideScale={0.94}
+          inactiveSlideOpacity={0.7}
+          enableMomentum={false}
+          containerCustomStyle={styles.slider}
+          contentContainerCustomStyle={styles.sliderContentContainer}
+          loop={true}
+          loopClonesPerSide={2}
+          autoplay={false}
+          autoplayDelay={500}
+          autoplayInterval={3000}
+          onSnapToItem={(index) => this.setState({ slider1ActiveSlide: index }) }
+        />
+        <Pagination
+          dotsLength={this.state.cardfilter.length}
+          activeDotIndex={this.state.slider1ActiveSlide}
+          containerStyle={styles.paginationContainer}
+          dotColor={'rgba(255, 255, 255, 0.92)'}
+          dotStyle={styles.paginationDot}
+          inactiveDotColor={colors.black}
+          inactiveDotOpacity={0.4}
+          inactiveDotScale={0.6}
+          carouselRef={this.state.slider1Ref}
+          tappableDots={!!this.state.slider1Ref}
+        />
+      </View>
     );
   }
 }
 
-
-const desksStyles = StyleSheet.create({
-    containerDeskItem: {
-        borderColor: white,
-        borderWidth: 1,
-        borderRadius: 4,
-        padding: 10,
-        margin: 10,
-        marginTop: 0,
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    deskItem:{
-        color: white,
-        paddingRight: 5
-    },
-    deskItemNumber:{
-        marginLeft: 'auto'
-    }
-})
 
 function mapStateToProps (state) {
     return {

@@ -26,7 +26,7 @@ export default StyleSheet.create({
     scrollviewContentContainer: {
         paddingBottom: 50
     },
-    exampleContainer: {
+    Container: {
         marginBottom: 30
     },
     title: {

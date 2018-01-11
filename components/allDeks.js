@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Platform, ScrollView, Image, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Platform, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
@@ -12,6 +12,12 @@ import { getCategoryMetaInfo } from '../utils/helpers'
 
 import ImageElement from './imagesElement'
 
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+
+function wp (percentage) {
+    const value = (percentage * viewportWidth) / 100;
+    return Math.round(value);
+}
 
 class AllDeks extends Component {
   componentDidMount () {
@@ -26,8 +32,8 @@ class AllDeks extends Component {
         });
   }
 
-  onPress = (id) => {
-    this.props.navigation.navigate('DesksDetail', {idDesks: id})
+  onPress = (id, title) => {
+    this.props.navigation.navigate('DesksDetail', {idDesks: id, title: title})
   }
 
   render() {
@@ -54,7 +60,7 @@ class AllDeks extends Component {
                   <View style={[StylesDeks.deskRight]}>
                     <TouchableOpacity
                       style={[StylesDeks.deskbtn]}
-                      onPress={(e) => this.onPress(currentDesk.id)}
+                      onPress={(e) => this.onPress(currentDesk.id, currentDesk.title)}
                     >
                       <Text style={{color:white, fontWeight: 'bold'}}>GO PLAY</Text>
                       <Ionicons name={'md-arrow-dropright'} size={30} color={'#FFF'} />
@@ -81,7 +87,8 @@ const StylesDeks = StyleSheet.create({
       paddingTop: 20,
       flex: 1,
       flexDirection: 'column',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      height: wp(65)
     },
     blocktext:{
       flex:1,
@@ -106,10 +113,10 @@ const StylesDeks = StyleSheet.create({
     deskRight:{
       flex: 1,
       alignItems: 'flex-end',
-      color: white
+      color: '#fff',
     },
     deskItem:{
-      color: white,
+      color: '#fff',
       paddingRight: 5,
       fontWeight: 'bold',
       fontSize: 20,
@@ -117,7 +124,7 @@ const StylesDeks = StyleSheet.create({
       alignItems:'flex-start'
     },
     deskItemText:{
-      color: white,
+      color: '#fff',
       paddingRight: 5,
       fontWeight: 'bold',
       fontSize: 20,

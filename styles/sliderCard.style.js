@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { colors } from 'index.style';
+import { colors } from './index.style';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
@@ -8,7 +8,9 @@ function wp (percentage) {
     return Math.round(value);
 }
 
-const slideHeight = viewportHeight * 0.4;
+const slideHeight = viewportHeight * 0.80;
+const imgHeight = viewportHeight * 0.35;
+const textHeight = viewportHeight * 0.3;
 const slideWidth = wp(75);
 const itemHorizontalMargin = wp(2);
 
@@ -28,17 +30,23 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         borderTopLeftRadius: entryBorderRadius,
-        borderTopRightRadius: entryBorderRadius
+        borderTopRightRadius: entryBorderRadius,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        width:null,
+        padding:45
     },
     imageContainerEven: {
-        backgroundColor: colors.black
+        backgroundColor: 'white'
     },
     image: {
         ...StyleSheet.absoluteFillObject,
         resizeMode: 'cover',
-        borderRadius: Platform.OS === 'ios' ? entryBorderRadius : 0,
-        borderTopLeftRadius: entryBorderRadius,
-        borderTopRightRadius: entryBorderRadius
+        borderRadius: entryBorderRadius,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        padding:45,
+        height:imgHeight
     },
     // image's border radius is buggy on ios; let's hack it!
     radiusMask: {
@@ -50,19 +58,20 @@ export default StyleSheet.create({
         backgroundColor: 'white'
     },
     radiusMaskEven: {
-        backgroundColor: colors.black
+        backgroundColor: 'white'
     },
     textContainer: {
         justifyContent: 'center',
-        paddingTop: 20 - entryBorderRadius,
         paddingBottom: 20,
         paddingHorizontal: 16,
         backgroundColor: 'white',
         borderBottomLeftRadius: entryBorderRadius,
-        borderBottomRightRadius: entryBorderRadius
+        borderBottomRightRadius: entryBorderRadius,
+        height:textHeight,
+        paddingBottom:20
     },
     textContainerEven: {
-        backgroundColor: colors.black
+        backgroundColor: 'white'
     },
     title: {
         color: colors.black,
@@ -73,8 +82,10 @@ export default StyleSheet.create({
     titleEven: {
         color: 'white'
     },
+    btnform:{
+        marginTop: 20
+    },
     subtitle: {
-        marginTop: 6,
         color: colors.gray,
         fontSize: 12,
         fontStyle: 'italic'

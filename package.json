@@ -22,9 +22,12 @@
     "expo": "^23.0.4",
     "react": "16.0.0",
     "react-native": "0.50.3",
+    "react-native-elements": "^0.18.5",
     "react-native-fontawesome": "^5.7.0",
     "react-native-snap-carousel": "^3.5.0",
-    "react-navigation": "^1.0.0-beta.23"
+    "react-native-vector-icons": "^4.5.0",
+    "react-navigation": "^1.0.0-beta.23",
+    "styled-components": "^2.4.0"
   },
   "resolutions": {
     "react-native/metro-bundler": "0.20.0"
