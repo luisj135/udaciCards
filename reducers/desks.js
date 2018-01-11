@@ -3,6 +3,8 @@ import * as deskActions from '../actions/desks'
 function desksReducer (state = [], action) {   
   switch (action.type) {
     case deskActions.INIT_ITEM :
+    console.log('reducer')
+
       return {
         ...state,
         ...action.data,
@@ -36,6 +38,7 @@ function desksReducer (state = [], action) {
         ...datafiltred,
       }
   default :
+  console.log(state)
       return state
   }
 }

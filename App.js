@@ -14,6 +14,7 @@ import {white, black, purple} from './utils/colors'
 import AllDeks from './components/allDeks'
 import AllCards from './components/allCard'
 import addDesk from './components/addDesk'
+import addCard from './components/addCard'
 import addData from './components/addData'
 import allCard from './components/allCard'
 
@@ -38,7 +39,7 @@ const Menu = TabNavigator({
     addDesks: {
         screen: addData,
         navigationOptions: {
-          tabBarLabel: 'Add Desk',
+          tabBarLabel: 'Add New',
           tabBarIcon: ({ tintColor }) => (
             <FontAwesome name={'pencil'} size={17} color={'#FFF'} />
           ),
@@ -74,6 +75,24 @@ const MainNavigator = StackNavigator({
   },
   DesksDetail: {
     screen: allCard,
+    navigationOptions:{
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      }
+    }
+  },
+  NewCard: {
+    screen:addCard,
+    navigationOptions:{
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      }
+    }
+  },
+  NewDesks: {
+    screen:addDesk,
     navigationOptions:{
       headerTintColor: white,
       headerStyle: {

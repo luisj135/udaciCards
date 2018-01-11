@@ -3,10 +3,10 @@ export const ADD_ITEM = 'ADD_ITEM'
 export const EDIT_ITEM = 'EDIT_ITEM'
 export const DELETE_ITEM = 'DELETE_ITEM'
 
-export function allCard (cardobj) {
+export function allCard (cardid) {
   return {
     type: ALL_ITEM,
-    cardobj,
+    cardid,
   }
 }
 
@@ -23,7 +23,7 @@ export function editCard (idCard, idDeks) {
     type: EDIT_ITEM,
     idCard,
     idDeks,
-    title,
+    answer,
     question
   }
 }

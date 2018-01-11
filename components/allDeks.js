@@ -44,16 +44,16 @@ class AllDeks extends Component {
       <ScrollView>
         {Object.keys(this.props.desks).map((desk) => {
           const currentDesk = this.props.desks[desk]
-          const imageItem = '../images/' + currentDesk.ico
           const numQuestions = currentDesk.questions.length
           return (
             <View key={desk}  style={[StylesDeks.containerDeskItem, {backgroundColor: currentDesk.color} ]}>
               <View style={[StylesDeks.deskCenter]}>
-                <ImageElement imgsource={imageItem}>Image</ImageElement>
+                <ImageElement imgsource={currentDesk.ico}>Image</ImageElement>
               </View>
               <View style={[StylesDeks.blocktext]}>
                 <View style={[StylesDeks.deskCenterLeft]}>
                   <Text style={[StylesDeks.deskItemText, StylesDeks.deskItemNumber]}>{numQuestions}</Text>
+                  <Text style={{fontSize:14, color:white, marginLeft:20, fontWeight:'bold'}}>Cards</Text>
                 </View>
                 <View style={[StylesDeks.deskCenterRight]}>
                   <View style={[StylesDeks.deskItem]}>
@@ -110,7 +110,8 @@ const StylesDeks = StyleSheet.create({
     },
     deskCenter:{
       flex: 1,
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent:'space-between'
     },
     deskRight:{
       flex: 1,

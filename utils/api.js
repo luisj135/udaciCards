@@ -8,7 +8,7 @@ const Data = {
     'React': {
         id: 1,
         title: 'React',
-        ico: require('../images/20.png'),
+        ico: require('../images/24.png'),
         color: '#5b6374',
         questions: [
             {

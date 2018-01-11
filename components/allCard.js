@@ -21,6 +21,7 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { sliderWidth, itemWidth } from '../styles/sliderCard.style';
 import CardItem from './cardItem';
 import styles, { colors } from '../styles/index.style';
+import { FormLabel, FormInput, Button } from 'react-native-elements'
 
 
 function SubmitBtn ({ onPress }) {
@@ -43,6 +44,7 @@ class AllCard extends Component {
       slider1Ref: null,
       first_item: 1,
       elementRef: [],
+      indexItem: 0,
       title: 'item'
     }
   }
@@ -67,7 +69,7 @@ class AllCard extends Component {
     })
 
     this.setState({
-      slider1ActiveSlide: this.state.first_item
+      indexItem: this.state.slider1ActiveSlide
     });
   }
 
@@ -91,8 +93,8 @@ class AllCard extends Component {
   
   render () {
     console.log(this.props.navigation.state.params.idDesks)
-    console.log(this.state.cardfilter)
-
+    console.log(this.state.slider1ActiveSlide)
+    
     return (
       <View style={styles.Container}>
         <Carousel
@@ -108,12 +110,15 @@ class AllCard extends Component {
           enableMomentum={false}
           containerCustomStyle={styles.slider}
           contentContainerCustomStyle={styles.sliderContentContainer}
-          loop={true}
+          loop={false}
           loopClonesPerSide={2}
           autoplay={false}
           autoplayDelay={500}
-          autoplayInterval={3000}
-          onSnapToItem={(index) => this.setState({ slider1ActiveSlide: index }) }
+          autoplayInterval={300000}
+          onSnapToItem={(index) => { 
+            this.setState({ slider1ActiveSlide: index }) 
+            this.setState({ indexItem: (index + 1) }) 
+          }}
         />
         <Pagination
           dotsLength={this.state.cardfilter.length}
@@ -127,6 +132,35 @@ class AllCard extends Component {
           carouselRef={this.state.slider1Ref}
           tappableDots={!!this.state.slider1Ref}
         />
+        <View style={{marginTop: 20, justifyContent: 'space-between', height:60, flexDirection:'row'}}>
+          <View style={{ width: 170}}>
+            <TouchableOpacity
+              activeOpacity={1}
+              style={styles.slideInnerContainer}
+              onPress={() => { alert(`You've clicked '${question}'`); }}
+              >
+                <Button
+                  large
+                  title='New Card'
+                  backgroundColor='#292477'
+                  containerViewStyle={[styles.btnform]}
+                 />
+            </TouchableOpacity>
+          </View>
+          <View style={{flexDirection:'column', width:90, height:60, justifyContent: 'space-between', alignItems: 'center'}}>
+            <Text style={{fontSize:28, flexDirection:'row', flex:1, height:60, marginBottom:5}}>
+              0 / {this.state.cardfilter.length * 10 }
+            </Text>
+            <Text style={{fontSize:10, flexDirection:'row', flex:1, height:5}}>
+              Points
+            </Text>
+          </View>
+          <View>
+            <Text style={{fontSize:35, margin:10, flexDirection:'row', flex:1, height:50}}>
+              {this.state.indexItem} / {this.state.cardfilter.length}
+            </Text>
+          </View>
+        </View>
       </View>
     );
   }

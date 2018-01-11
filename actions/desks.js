@@ -1,9 +1,11 @@
 import * as Api from '../utils/api'
 
 export const INIT_ITEM = 'INIT_ITEM'
+export const ALL_ITEM = 'ALL_ITEM'
 export const ADD_INIT = 'ADD_DESK'
 export const EDIT_INIT = 'EDIT_DESK'
 export const DELETE_INIT = 'DELETE_DESK'
+
 
 export function initDesks (data) {
     return {
@@ -12,15 +14,12 @@ export function initDesks (data) {
     }
 }
 
-
-export function getDesk () {
-    return dispatch => {
-        Api.fetchDesks()
-            .then((res) => {
-                dispatch( initDesk(res) );
-            });
-    };
+export function allDesks () {
+    return {
+        type: ALL_ITEM
+    }
 }
+
 
 export function addDesk (desksObj) {
     return {

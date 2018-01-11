@@ -8,7 +8,7 @@ function wp (percentage) {
     return Math.round(value);
 }
 
-const slideHeight = viewportHeight * 0.80;
+const slideHeight = viewportHeight * 0.64;
 const imgHeight = viewportHeight * 0.35;
 const textHeight = viewportHeight * 0.3;
 const slideWidth = wp(75);
@@ -45,7 +45,7 @@ export default StyleSheet.create({
         borderRadius: entryBorderRadius,
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
-        padding:45,
+        padding:25,
         height:imgHeight
     },
     // image's border radius is buggy on ios; let's hack it!

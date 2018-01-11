@@ -3,16 +3,23 @@ import * as cardsActions from '../actions/cards'
 function cardsReducer (state = {}, action) {
   switch (action.type) {
     case cardsActions.ADD_ITEM :
+      console.log(state.desks)
+      let datadeknew = state.desks.map((item, index) => {
+        if (item.id === action.idDeks){
+          item.questions = item.questions.concat(action.cardnew)
+        }
+        return item
+      })
       return {
         ...state,
-        ...action.cardnew
+        ...datadeknew
       }
     case cardsActions.EDIT_ITEM :
-      let datadek = state.deks.map((item, index) => {
+      let datadek = state.desks.map((item, index) => {
         if (item.id === action.idDeks){
-          let datacard = item.map((itemcar, indexcar) => {
+          let datacard = item.questions.map((itemcar, indexcar) => {
             if (itemcar.id === action.idCard){
-              item['title']= action.title
+              item['answer']= action.title
               item['question']= action.question
               item['timestamp']= Date.now()
             }
@@ -27,7 +34,7 @@ function cardsReducer (state = {}, action) {
         ...datadek,
       }
     case cardsActions.DELETE_ITEM :
-      let datafiltred = state.deks.map((item, index) => {
+      let datafiltred = state.desks.map((item, index) => {
         if (item.id === action.idDeks){
           let datafiltred = item.questions.filter((itemdata) => {
             return itemdata.id !== action.id
