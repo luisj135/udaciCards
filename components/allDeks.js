@@ -8,7 +8,7 @@ import {Tile, List, ListItem} from 'react-native-elements';
 
 import { white, black } from '../utils/colors';
 
-import * as desksActions from '../actions/desks'
+import { initDesks } from '../actions/'
 import * as API from '../utils/api'
 import { getCategoryMetaInfo } from '../utils/helpers'
 
@@ -26,12 +26,18 @@ class AllDeks extends Component {
 
     const { dispatch } = this.props;
 
-    API.initDesks();
+    if(Object.keys(this.props.desks).length === 0){
 
-    API.fetchDesks()
-        .then((desks) => {
-            dispatch( desksActions.initDesks( JSON.parse(desks) ) )
-        });
+      API.initDesks();
+
+      API.fetchDesks()
+          .then((desks) => {
+              let desksInit = {
+                desks: JSON.parse(desks)
+              }
+              dispatch( initDesks( desksInit ) )
+          });
+    }
   }
 
   onPress = (id, title) => {
@@ -39,10 +45,10 @@ class AllDeks extends Component {
   }
 
   render() {
-    const desks = this.props.desks;   
+    const desks = this.props.desks
     return (
       <ScrollView>
-        {Object.keys(this.props.desks).map((desk) => {
+        {Object.keys(this.props.desks).reverse().map((desk) => {
           const currentDesk = this.props.desks[desk]
           const numQuestions = currentDesk.questions.length
           return (
@@ -147,10 +153,10 @@ const StylesDeks = StyleSheet.create({
 })
 
 function mapStateToProps (state) {
-    return {
-        desks: state.desks
-    }
+  return {
+      desks: state.desks
   }
+}
   
 export default connect(
     mapStateToProps,

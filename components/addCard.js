@@ -7,7 +7,7 @@ import { white, black, purple } from '../utils/colors';
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { addCard, allCard } from '../actions/cards'
+import { addCard, allCard } from '../actions'
 
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -36,6 +36,10 @@ class AddCard extends Component {
     }
   }
 
+  componentDidMount (){
+    this.setState({idvalueSel : this.props.navigation.state.params.catid})
+  }
+
   onSelect = (value, label) => {
     console.log(value, label)
     this.setState({value : label})
@@ -56,23 +60,23 @@ class AddCard extends Component {
         answer: this.state.answerText,
         question: this.state.questionText
       }
-    console.log(data)
     this.props.addCard(this.state.idvalueSel, data)
-    console.log(this.props.allCard(this.state.idvalueSel))
+    this.props.navigation.navigate('Home')
   }
 
   }
 
   render() {
-    console.log(this.state)
     return (
         <View style={{ margin: 20, backgroundColor: '#ffff', padding:20, borderRadius:10, height:wp(80), justifyContent:'space-between', flexDirection:'column'}}>
           <FormLabel>Question</FormLabel>
           <FormInput onChangeText={(text) => this.setState({questionText: text})} inputStyle={{width:null, justifyContent:'space-between', }}/>
           <FormLabel>Answer</FormLabel>
           <FormInput onChangeText={(text) => this.setState({answerText: text})} inputStyle={{width:null, justifyContent:'space-between', }}/>
-          <FormLabel>Desks</FormLabel>
-          { !this.props.navigation.state.params.edit && (
+          
+          { !this.props.navigation.state.params.cat && (
+            <View>
+            <FormLabel>Desks</FormLabel>
             <Select
               onSelect = {this.onSelect}
               defaultText  = {this.state.value}
@@ -88,7 +92,8 @@ class AddCard extends Component {
                   <Option key={currentDesk.id} value = {currentDesk.id}>{currentDesk.title}</Option>
                   )
               })}
-              </Select> )
+              </Select> 
+            </View>)
           }            
           <Button
             large
@@ -111,7 +116,7 @@ function mapStateToProps (state) {
 
 function mapDispathToProps (dispatch){
   return {
-    addCard: (data) => dispatch(addCard(data)),
+    addCard: (idDesk, data) => dispatch(addCard(idDesk, data)),
     allCard: (data) => dispatch(allCard(data))
   }
 }

@@ -14,7 +14,6 @@ import { connect } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
 import { white } from '../utils/colors';
 
-import * as cardsActions from '../actions/cards'
 import * as API from '../utils/api'
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -24,6 +23,8 @@ import styles, { colors } from '../styles/index.style';
 import { FormLabel, FormInput, Button } from 'react-native-elements'
 
 
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+
 function SubmitBtn ({ onPress }) {
   return (
     <TouchableOpacity
@@ -31,6 +32,11 @@ function SubmitBtn ({ onPress }) {
       <Text>GO PLAY</Text>
     </TouchableOpacity>
   )
+}
+
+function wp (percentage) {
+    const value = (percentage * viewportWidth) / 100;
+    return Math.round(value);
 }
 
 class AllCard extends Component {
@@ -45,7 +51,8 @@ class AllCard extends Component {
       first_item: 1,
       elementRef: [],
       indexItem: 0,
-      title: 'item'
+      title: 'item',
+      newItem: false
     }
   }
 
@@ -57,20 +64,27 @@ class AllCard extends Component {
       if (this.props.desks[item].id === this.props.navigation.state.params.idDesks){
         this.setState({
           cardfilter: this.props.desks[item].questions
-        });
+        })
         this.setState({
           elementRef: this.props.desks[item]
-        });
+        })
         this.setState({
           title: this.props.desks[item].title
-        });
+        })
+        if(this.props.desks[item].questions.length === 0){
+          this.setState({
+           newItem:true
+          })
+        }
       }
        
     })
 
     this.setState({
       indexItem: this.state.slider1ActiveSlide
-    });
+    })
+
+    
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -92,9 +106,6 @@ class AllCard extends Component {
 
   
   render () {
-    console.log(this.props.navigation.state.params.idDesks)
-    console.log(this.state.slider1ActiveSlide)
-    
     return (
       <View style={styles.Container}>
         <Carousel
@@ -132,37 +143,51 @@ class AllCard extends Component {
           carouselRef={this.state.slider1Ref}
           tappableDots={!!this.state.slider1Ref}
         />
-        <View style={{marginTop: 20, justifyContent: 'space-between', height:60, flexDirection:'row'}}>
-          <View style={{ width: 170}}>
-            <TouchableOpacity
-              activeOpacity={1}
-              style={styles.slideInnerContainer}
-              onPress={() => { alert(`You've clicked '${question}'`); }}
-              >
+        { 
+          !this.state.newItem && (
+            <View style={{marginTop: 20, justifyContent: 'space-between', height:60, flexDirection:'row'}}>
+              <View style={{ width: 170}}>
                 <Button
                   large
                   title='New Card'
                   backgroundColor='#292477'
                   containerViewStyle={[styles.btnform]}
+                  onPress={() => { this.props.navigation.navigate('NewCard', {cat:true, catid: this.props.navigation.state.params.idDesks})}}
                  />
-            </TouchableOpacity>
-          </View>
-          <View style={{flexDirection:'column', width:90, height:60, justifyContent: 'space-between', alignItems: 'center'}}>
-            <Text style={{fontSize:28, flexDirection:'row', flex:1, height:60, marginBottom:5}}>
-              0 / {this.state.cardfilter.length * 10 }
-            </Text>
-            <Text style={{fontSize:10, flexDirection:'row', flex:1, height:5}}>
-              Points
-            </Text>
-          </View>
-          <View>
-            <Text style={{fontSize:35, margin:10, flexDirection:'row', flex:1, height:50}}>
-              {this.state.indexItem} / {this.state.cardfilter.length}
-            </Text>
-          </View>
-        </View>
+              </View>
+                <View style={{flexDirection:'column', width:90, height:60, justifyContent: 'space-between', alignItems: 'center'}}>
+                  <Text style={{fontSize:28, flexDirection:'row', flex:1, height:60, marginBottom:5}}>
+                    0 / {this.state.cardfilter.length * 10 }
+                  </Text>
+                  <Text style={{fontSize:10, flexDirection:'row', flex:1, height:5}}>
+                    Points
+                  </Text>
+                </View>
+                <View>
+                  <Text style={{fontSize:35, margin:10, flexDirection:'row', flex:1, height:50}}>
+                    {this.state.indexItem} / {this.state.cardfilter.length}
+                  </Text>
+                </View>
+            </View>
+          )
+        }
+        { 
+          this.state.newItem && (
+            <View style={{marginTop: 20, justifyContent: 'space-between', height:60, flexDirection:'row'}}>
+              <View style={{ width: wp(100)}}>
+                <Button
+                  large
+                  title='New Card'
+                  backgroundColor='#292477'
+                  containerViewStyle={[styles.btnform]}
+                  onPress={() => { this.props.navigation.navigate('NewCard', {cat:true, catid: this.props.navigation.state.params.idDesks})}}
+                 />
+              </View>
+            </View>
+          )
+        }
       </View>
-    );
+    )
   }
 }
 
