@@ -10,6 +10,7 @@ const Data = {
         title: 'React',
         ico: require('../images/24.png'),
         color: '#5b6374',
+        points: 0,
         questions: [
             {
                 question: 'What is React?',
@@ -26,6 +27,7 @@ const Data = {
         title: 'JavaScript',
         ico: require('../images/1.png'),
         color: '#ec8557',
+        points: 0,
         questions: [
             {
                 question: 'What is a closure?',

@@ -41,7 +41,7 @@ class AllDeks extends Component {
   }
 
   onPress = (id, title) => {
-    this.props.navigation.navigate('DesksDetail', {idDesks: id, title: title})
+    this.props.navigation.navigate('Menucard', {idDesks: id, title: title})
   }
 
   render() {
@@ -70,7 +70,7 @@ class AllDeks extends Component {
                       style={[StylesDeks.deskbtn]}
                       onPress={(e) => this.onPress(currentDesk.id, currentDesk.title)}
                     >
-                      <Text style={{color:white, fontWeight: 'bold'}}>GO PLAY</Text>
+                      <Text style={{color:white, fontWeight: 'bold'}}>GO </Text>
                       <Ionicons name={'md-arrow-dropright'} size={30} color={'#FFF'} />
                     </TouchableOpacity>
                   </View>

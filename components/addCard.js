@@ -32,12 +32,21 @@ class AddCard extends Component {
       value : "Select Me Please",
       idvalueSel: 0,
       questionText: '',
+      elementRef: [],
       answerText: ''
     }
   }
 
   componentDidMount (){
     this.setState({idvalueSel : this.props.navigation.state.params.catid})
+    let datafilter = Object.keys(this.props.desks).map((item) => {
+      if (this.props.desks[item].id === this.props.navigation.state.params.catid){
+        this.setState({
+          elementRef: this.props.desks[item]
+        })
+      }
+       
+    })
   }
 
   onSelect = (value, label) => {
@@ -61,12 +70,14 @@ class AddCard extends Component {
         question: this.state.questionText
       }
     this.props.addCard(this.state.idvalueSel, data)
-    this.props.navigation.navigate('Home')
+    this.props.navigation.navigate('Menucard', {idDesks: this.state.elementRef.id, title: this.state.elementRef.title})
   }
 
   }
 
   render() {
+    console.log(this.props.navigation.state.params.catid)
+    console.log(this.state.elementRef)
     return (
         <View style={{ margin: 20, backgroundColor: '#ffff', padding:20, borderRadius:10, height:wp(80), justifyContent:'space-between', flexDirection:'column'}}>
           <FormLabel>Question</FormLabel>

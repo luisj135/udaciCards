@@ -6,6 +6,7 @@ import {
   DELETE_ITEM_DESK,
   ALL_ITEM_CARD,
   ADD_ITEM_CARD,
+  ADD_ITEM_POINT_CARD,
   EDIT_ITEM_CARD,
   DELETE_ITEM_CARD
 
@@ -60,6 +61,18 @@ function reducer(state =  initialState, action = {}){
         const desks = state.desks[item]
         if (desks.id === action.idDeks){
           desks.questions.push(action.cardnew)
+        }
+      })
+      return {
+        ...state,
+        ...state.desks
+      }
+    case ADD_ITEM_POINT_CARD:
+    console.log(action.cardpoints)
+      Object.keys(state.desks).map((item) => {
+        const desks = state.desks[item]
+        if (desks.id === action.idDeks){
+          desks.points = action.cardpoints
         }
       })
       return {

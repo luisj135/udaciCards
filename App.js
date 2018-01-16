@@ -13,6 +13,7 @@ import {white, black, purple} from './utils/colors'
 
 import AllDeks from './components/allDeks'
 import AllCards from './components/allCard'
+import menuCard from './components/menuCard'
 import addDesk from './components/addDesk'
 import addCard from './components/addCard'
 import addData from './components/addData'
@@ -82,7 +83,25 @@ const MainNavigator = StackNavigator({
       }
     }
   },
+  Menucard: {
+    screen: menuCard,
+    navigationOptions:{
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      }
+    }
+  },
   NewCard: {
+    screen:addCard,
+    navigationOptions:{
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      }
+    }
+  },
+  EditCard: {
     screen:addCard,
     navigationOptions:{
       headerTintColor: white,

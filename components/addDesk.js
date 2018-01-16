@@ -36,32 +36,32 @@ class AddDesk extends Component {
     if(this.state.desksTex !== ''){
       let numb = Math.floor((Math.random() * 25) + 1)
       let arraColor = {
-        1: '#ec8557',
+        1: '#73bdc5',
         2: '#fff',
         3: '#73bdc5',
         4: '#dde5e9',
-        5: '#ec8557',
+        5: '#73bdc5',
         6: '#5b6374',
         7: '#5b6374',
-        8: '#ec8557',
+        8: '#73bdc5',
         9: '#73bdc5',
         10: '#5b6374',
         11: '#dde5e9',
         12: '#73bdc5',
         13: '#4b525f',
         14: '#4b525f',
-        15: '#ec8557',
+        15: '#73bdc5',
         16: '#5b6374',
-        17: '#ec8557',
+        17: '#73bdc5',
         18: '#73bdc5',
         19: '#dde5e9',
         20: '#5b6374',
         21: '#73bdc5',
         22: '#5b6374',
         23: '#5b6374',
-        24: '#ec8557',
+        24: '#73bdc5',
         25: '#73bdc5',
-        26: '#ec8557',
+        26: '#73bdc5',
       }
      let data = {
         id: uuid.v4(),
@@ -73,7 +73,7 @@ class AddDesk extends Component {
       }
       let key = this.state.desksText.trim()
     this.props.addDesk(key, data)
-    this.props.navigation.navigate('Home')
+    this.props.navigation.navigate('Menucard', {idDesks: data.id, title: data.title})
     }
   }
 

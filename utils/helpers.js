@@ -1,6 +1,10 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, AsyncStorage } from 'react-native'
 import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
+import { Notifications, Permissions } from 'expo'
+
+
+const NOTIFICATION_KEY = 'UdacityProject:notifications'
 
 export function getCategoryMetaInfo (category) {
   const info = 
@@ -142,4 +146,56 @@ export function getCategoryMetaInfo (category) {
   return typeof category === 'undefined'
     ? info
     : info[category]
+}
+
+export function clearLocalNotifications (){
+  return AsyncStorage.removeItem(NOTIFICATION_KEY)
+    .then(Notifications.cancelAllScheduledNotificationsAsync)
+}
+
+function createNotifications () {
+  return  {
+    title: 'Log yout Desks',
+    boyd: "don´t forget to long your Desks for today!",
+    ios: {
+      sound:true,
+    },
+    android:{
+      sound: true,
+      priority: 'high',
+      sticky: false,
+      vibrate: true,
+    }
+  }
+}
+
+export function setLocalNotifications () {
+  AsyncStorage.getItem(NOTIFICATION_KEY)
+  .then(JSON.parse)
+  .then((data) => {
+    if (data === null) {
+      Permissions.askAsync(Permissions.NOTIFICATIONS)
+        .then(({ status }) => {
+          console.log(status)
+          if(status === 'granted'){
+            Notifications.cancelAllScheduledNotificationsAsync()
+
+            let tomorrow = new Date()
+            tomorrow.setDate(tomorrow.getDate() + 1)
+            tomorrow.setHours(20)
+            tomorrow.setMinutes(0)
+
+            Notifications.scheduleLocalNotificationsAsync(
+              createNotifications(),
+              {
+                time: tomorrow,
+                repeat: 'day',
+              }
+            )
+
+            AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true))
+          }
+        })
+    }    
+  })
 }

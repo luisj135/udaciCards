@@ -8,6 +8,11 @@ function wp (percentage) {
     return Math.round(value);
 }
 
+function wh (percentage) {
+    const value = (percentage * viewportHeight) / 100;
+    return Math.round(value);
+}
+
 const slideHeight = viewportHeight * 0.64;
 const imgHeight = viewportHeight * 0.35;
 const textHeight = viewportHeight * 0.3;
@@ -92,5 +97,22 @@ export default StyleSheet.create({
     },
     subtitleEven: {
         color: 'rgba(255, 255, 255, 0.7)'
+    },
+    flipCard: {
+        backfaceVisibility: 'hidden',
+        width: wp(80),
+        height: wh(60)
+    },
+    flipCardBack: {
+        backgroundColor: 'red',
+        position: 'absolute',
+        top: 0,
+        width: wp(80),
+        height: wh(60),
+        borderTopLeftRadius: entryBorderRadius,
+        borderTopRightRadius: entryBorderRadius,
+        borderBottomRightRadius: entryBorderRadius,
+        borderBottomLeftRadius: entryBorderRadius
     }
+
 });

@@ -44,11 +44,11 @@ class AllCard extends Component {
   constructor(props){
     super(props)
     this.state = {
-      cardfilter: [],
+      cardfilter: {},
       widthSlider: Dimensions.get('window').width,
       slider1ActiveSlide: 1,
       slider1Ref: null,
-      first_item: 1,
+      first_item: 0,
       elementRef: [],
       indexItem: 0,
       title: 'item',
@@ -56,12 +56,12 @@ class AllCard extends Component {
     }
   }
 
-  componentDidMount () {
+  componentWillMount () {
 
     const { dispatch } = this.props;
 
     let datafilter = Object.keys(this.props.desks).map((item) => {
-      if (this.props.desks[item].id === this.props.navigation.state.params.idDesks){
+      if (this.props.desks[item].id === this.props.navigation.state.params.catid){
         this.setState({
           cardfilter: this.props.desks[item].questions
         })
@@ -93,16 +93,20 @@ class AllCard extends Component {
     }
   }
 
-  _renderItemWithParallax ({item, index}, parallaxProps) {
-        return (
-            <CardItem
-              data={item}
-              even={(index + 1) % 2 === 0}
-              parallax={true}
-              parallaxProps={parallaxProps}
-            />
-        );
-    }
+  renderItemWithParallax = ({item, index}, parallaxProps) => {
+    return (
+        <CardItem
+          data={item}
+          even={(index + 1) % 1 === 0}
+          parallax={true}
+          parallaxProps={parallaxProps}
+          pointsAll = {this.state.cardfilter.length * 10}
+          pointsact= {0}
+          idDesks = {this.props.navigation.state.params.catid}
+          next = {() => this.refs.carousel.snapToNext()}
+        />
+    )
+  }
 
   
   render () {
@@ -111,7 +115,7 @@ class AllCard extends Component {
         <Carousel
           ref={(c) => { if (!this.state.slider1Ref) { this.setState({ slider1Ref: c }); } }}
           data={this.state.cardfilter}
-          renderItem={this._renderItemWithParallax}
+          renderItem={this.renderItemWithParallax}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
           hasParallaxImages={true}
@@ -152,12 +156,12 @@ class AllCard extends Component {
                   title='New Card'
                   backgroundColor='#292477'
                   containerViewStyle={[styles.btnform]}
-                  onPress={() => { this.props.navigation.navigate('NewCard', {cat:true, catid: this.props.navigation.state.params.idDesks})}}
+                  onPress={() => { this.props.navigation.navigate('NewCard', {cat:true, catid: this.props.navigation.state.params.catid})}}
                  />
               </View>
-                <View style={{flexDirection:'column', width:90, height:60, justifyContent: 'space-between', alignItems: 'center'}}>
+                <View style={{flexDirection:'column', width:90, height:90, justifyContent: 'space-between', alignItems: 'center'}}>
                   <Text style={{fontSize:28, flexDirection:'row', flex:1, height:60, marginBottom:5}}>
-                    0 / {this.state.cardfilter.length * 10 }
+                    { this.state.elementRef.points } / {this.state.cardfilter.length * 10 }
                   </Text>
                   <Text style={{fontSize:10, flexDirection:'row', flex:1, height:5}}>
                     Points
@@ -180,7 +184,7 @@ class AllCard extends Component {
                   title='New Card'
                   backgroundColor='#292477'
                   containerViewStyle={[styles.btnform]}
-                  onPress={() => { this.props.navigation.navigate('NewCard', {cat:true, catid: this.props.navigation.state.params.idDesks})}}
+                  onPress={() => { this.props.navigation.navigate('NewCard', {cat:true, catid: this.props.navigation.state.params.catid})}}
                  />
               </View>
             </View>
