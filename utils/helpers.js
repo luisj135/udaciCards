@@ -155,8 +155,8 @@ export function clearLocalNotifications (){
 
 function createNotifications () {
   return  {
-    title: 'Log yout Desks',
-    boyd: "don´t forget to long your Desks for today!",
+    title: 'Log your Desks app',
+    boyd: 'don´t forget to long your Desks for today!',
     ios: {
       sound:true,
     },
@@ -176,7 +176,6 @@ export function setLocalNotifications () {
     if (data === null) {
       Permissions.askAsync(Permissions.NOTIFICATIONS)
         .then(({ status }) => {
-          console.log(status)
           if(status === 'granted'){
             Notifications.cancelAllScheduledNotificationsAsync()
 
@@ -184,8 +183,7 @@ export function setLocalNotifications () {
             tomorrow.setDate(tomorrow.getDate() + 1)
             tomorrow.setHours(20)
             tomorrow.setMinutes(0)
-
-            Notifications.scheduleLocalNotificationsAsync(
+            Notifications.scheduleLocalNotificationAsync(
               createNotifications(),
               {
                 time: tomorrow,
