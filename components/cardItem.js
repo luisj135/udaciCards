@@ -19,11 +19,12 @@ class SliderEntry extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ansText: '',
+      ansSel: '',
       ansInitText: '',
       animateinit: 0,
       viewBack:false,
-      points:0
+      points:0,
+      response:false
     }
   }
 
@@ -91,19 +92,24 @@ class SliderEntry extends Component {
     );
   }
 
-  compareAns = () => {
-    if(this.state.animateinit <= 90){
-      let similarity = stringSimilarity.compareTwoStrings(this.state.ansText, this.state.ansInitText)
-      let numb = Math.round(similarity * 10)
+  compareAns = (value) => {
+    let numbsub = 0
+    if(this.state.ansSel !== value){
       this.setState({
-        points: numb
+        ansSel: value
       })
-      
-      numbsub = this.props.pointsact + numb
-      if(numbsub >= this.props.pointsAll){
-        numbsub = this.props.pointsAll
+      if(this.props.pointsact > 0){
+        numbsub = this.props.pointsact
       }
+    }else{
+      numbsub = (this.state.points + 10) + this.props.pointsact
+    }
+    if(numbsub <= this.props.pointsAll){
       this.props.addCardPoints(this.props.idDesks, numbsub)
+      this.props.numPoints(numbsub)
+    }
+
+    if(this.state.animateinit <= 90){
       Animated.timing(this.animatedValue, {
         toValue: 180,
         duration: 800
@@ -120,11 +126,43 @@ class SliderEntry extends Component {
        this.setState({
         viewBack: false
       })
+      this.setState({
+        response: true
+      })
     }
   }
 
+  compareback = (value) => {
+
+    let numbsub = 0
+    if(this.state.ansSel !== value){
+      this.setState({
+        ansSel: value
+      })
+      numbsub = (this.state.points + 10) + this.props.pointsact
+    }else{
+      numbsub = (this.state.points + 10) + this.props.pointsact
+    }
+    if(numbsub <= this.props.pointsAll){
+      this.props.addCardPoints(this.props.idDesks, numbsub)
+      this.props.numPoints(numbsub)
+      this.setState({
+        points: numbsub
+      })
+    }else{
+      this.setState({
+        points: this.props.pointsAll
+      })
+    }
+    this.setState({
+      response: true
+    })
+
+    
+  }
+
   render () {
-    const { data: {question, subtitle, answer }, even } = this.props
+    const { data: {question, subtitle, answer, points }, even } = this.props
     const frontAnimatedStyle = {
       transform: [
         { rotateY: this.frontInterpolateInit }
@@ -146,13 +184,19 @@ class SliderEntry extends Component {
           </View>
           <View style={[styles.textContainer, even ? styles.textContainerEven : {}]}>
               <FormLabel style={{fontSize:22, marginBottom:20}}>{ question }</FormLabel>
-              <FormInput onChangeText={(text) => this.setState({ansText: text})} inputStyle={{width:null, justifyContent:'space-between', }}/>
+               <Button
+                large
+                title='Correct'
+                backgroundColor='#4CAF50'
+                containerViewStyle={[styles.btnform]}
+                onPress={()=> this.compareAns(true)}
+               />
               <Button
                 large
-                title='Next'
-                backgroundColor='#292477'
+                title='Incorrect'
+                backgroundColor='#F44336'
                 containerViewStyle={[styles.btnform]}
-                onPress={this.compareAns}
+                onPress={()=> this.compareAns(false)}
                />
           </View>
         </Animated.View>
@@ -162,8 +206,37 @@ class SliderEntry extends Component {
               <View style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]} />
           </View>
           <View style={[styles.textContainer, even ? styles.textContainerEven : {}]}>
-              <Text style={{fontSize:22}}>{ answer }</Text>
-              <Text style={{fontSize:22}}>Match answer { this.state.points } / 10</Text>
+            <Text style={!this.state.response ? {fontSize:12} : {fontSize:22}}>{ answer }</Text>
+            <View>
+              {
+                !this.state.response && (
+                  <View>
+                    <Button
+                      large
+                      title='Correct'
+                      backgroundColor='#4CAF50'
+                      containerViewStyle={[styles.btnform]}
+                      onPress={()=> this.compareback(true)}
+                     />
+                    <Button
+                      large
+                      title='Incorrect'
+                      backgroundColor='#F44336'
+                      containerViewStyle={[styles.btnform]}
+                      onPress={()=> this.compareback(false)}
+                     />
+                  </View>
+                )
+              }
+
+              {
+                this.state.response && (
+                  <Text style={{fontSize:22, marginTop:20}}>
+                    Your points in this questions is : { this.state.points }
+                  </Text>
+                )
+              }
+            </View>
           </View>
         </Animated.View>
       </View>

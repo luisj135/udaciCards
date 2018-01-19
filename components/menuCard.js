@@ -26,6 +26,7 @@ import { FormLabel, FormInput, Button } from 'react-native-elements'
 import ImageElement from './imagesElement'
 
 import { clearLocalNotifications, setLocalNotifications } from '../utils/helpers'
+import { addCardPoints } from '../actions'
 
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -112,8 +113,14 @@ class AllCard extends Component {
     })
   }
 
+  reset = () => {
+    this.props.addCardPoints(this.state.elementRef.id, 0)
+    this.props.navigation.navigate('Home')
+  }
+
 
   render () {
+    console.log(this.state.elementRef.points)
     return (
       <View style={styles.Container}>
       
@@ -144,6 +151,20 @@ class AllCard extends Component {
                   onPress={() => { this.props.navigation.navigate('DesksDetail', {cat:true, catid: this.props.navigation.state.params.idDesks, title: this.state.elementRef.title})}}
                  />
               </View>
+              {
+                (this.state.cardfilter.length * 10) ===  this.state.elementRef.points && (
+                  <View style={{ width: wp(100), marginBottom:20}}>
+                    <Button
+                      large
+                      title='Reset Desks'
+                      backgroundColor='#F44336'
+                      containerViewStyle={[styles.btnform]}
+                      onPress={this.reset}
+                     />
+                  </View>
+                )
+              }
+              
               <View style={{justifyContent: 'space-between', height:90, flexDirection:'row'}}>
                 <View style={{flexDirection:'column', width:90, height:90, justifyContent: 'space-between', alignItems: 'center'}}>
                   <Text style={{fontSize:28, flexDirection:'row', flex:1, height:60, marginBottom:5}}>
@@ -155,7 +176,7 @@ class AllCard extends Component {
                 </View>
                 <View>
                   <Text style={{fontSize:35, margin:10, flexDirection:'row', flex:1, height:50}}>
-                    {this.state.indexItem} / {this.state.cardfilter.length}
+                    {this.state.cardfilter.length} { this.state.cardfilter.length > 1 && (<Text>Card`s</Text>)} { this.state.cardfilter.length <= 1 && (<Text>Card</Text>)}
                   </Text>
                 </View>
               </View>
@@ -217,7 +238,14 @@ function mapStateToProps (state) {
         desks: state.desks
     }
   }
+
+function mapDispathToProps (dispatch){
+  return {
+    addCardPoints: (key, data) => dispatch(addCardPoints(key, data))
+  }
+}
   
 export default connect(
     mapStateToProps,
+    mapDispathToProps
 )(AllCard)

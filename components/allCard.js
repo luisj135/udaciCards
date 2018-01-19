@@ -22,17 +22,10 @@ import CardItem from './cardItem';
 import styles, { colors } from '../styles/index.style';
 import { FormLabel, FormInput, Button } from 'react-native-elements'
 
+import { addCardPoints } from '../actions'
+
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
-
-function SubmitBtn ({ onPress }) {
-  return (
-    <TouchableOpacity
-      onPress={onPress}>
-      <Text>GO PLAY</Text>
-    </TouchableOpacity>
-  )
-}
 
 function wp (percentage) {
     const value = (percentage * viewportWidth) / 100;
@@ -52,7 +45,9 @@ class AllCard extends Component {
       elementRef: [],
       indexItem: 0,
       title: 'item',
-      newItem: false
+      newItem: false,
+      resum: false,
+      points: 0
     }
   }
 
@@ -67,6 +62,9 @@ class AllCard extends Component {
         })
         this.setState({
           elementRef: this.props.desks[item]
+        })
+        this.setState({
+          points: this.props.desks[item].points
         })
         this.setState({
           title: this.props.desks[item].title
@@ -93,19 +91,33 @@ class AllCard extends Component {
     }
   }
 
+  numprops = (value) =>{
+    console.log(value)
+    this.setState({
+      points: value
+    })
+  }
+
   renderItemWithParallax = ({item, index}, parallaxProps) => {
+
     return (
-        <CardItem
-          data={item}
-          even={(index + 1) % 1 === 0}
-          parallax={true}
-          parallaxProps={parallaxProps}
-          pointsAll = {this.state.cardfilter.length * 10}
-          pointsact= {0}
-          idDesks = {this.props.navigation.state.params.catid}
-          next = {() => this.refs.carousel.snapToNext()}
-        />
+      <CardItem
+        data={item}
+        even={(index + 1) % 1 === 0}
+        parallax={true}
+        parallaxProps={parallaxProps}
+        pointsAll = {this.state.cardfilter.length * 10}
+        pointsact= {this.state.points}
+        idDesks = {this.props.navigation.state.params.catid}
+        next = {() => this.refs.carousel.snapToNext()}
+        numPoints = {this.numprops}
+      />
     )
+  }
+
+  reset = () => {
+    this.props.addCardPoints(this.props.navigation.state.params.catid, 0)
+    this.props.navigation.navigate('Home')
   }
 
   
@@ -151,17 +163,32 @@ class AllCard extends Component {
           !this.state.newItem && (
             <View style={{marginTop: 20, justifyContent: 'space-between', height:60, flexDirection:'row'}}>
               <View style={{ width: 170}}>
-                <Button
-                  large
-                  title='New Card'
-                  backgroundColor='#292477'
-                  containerViewStyle={[styles.btnform]}
-                  onPress={() => { this.props.navigation.navigate('NewCard', {cat:true, catid: this.props.navigation.state.params.catid})}}
-                 />
+                {
+                  (this.state.cardfilter.length * 10) !==  this.state.points && (
+                    <Button
+                      large
+                      title='New Card'
+                      backgroundColor='#292477'
+                      containerViewStyle={[styles.btnform]}
+                      onPress={() => { this.props.navigation.navigate('NewCard', {cat:true, catid: this.props.navigation.state.params.catid})}}
+                     />
+                 )
+                }
+                {
+                  (this.state.cardfilter.length * 10) ===  this.state.points && (
+                    <Button
+                      large
+                      title='Reset'
+                      backgroundColor='#F44336'
+                      containerViewStyle={[styles.btnform]}
+                      onPress={this.reset}
+                     />
+                 )
+                }
               </View>
                 <View style={{flexDirection:'column', width:90, height:90, justifyContent: 'space-between', alignItems: 'center'}}>
                   <Text style={{fontSize:28, flexDirection:'row', flex:1, height:60, marginBottom:5}}>
-                    { this.state.elementRef.points } / {this.state.cardfilter.length * 10 }
+                    { this.state.points } / {this.state.cardfilter.length * 10 }
                   </Text>
                   <Text style={{fontSize:10, flexDirection:'row', flex:1, height:5}}>
                     Points
@@ -201,7 +228,14 @@ function mapStateToProps (state) {
         desks: state.desks
     }
   }
+
+function mapDispathToProps (dispatch){
+  return {
+    addCardPoints: (key, data) => dispatch(addCardPoints(key, data))
+  }
+}
   
 export default connect(
     mapStateToProps,
+    mapDispathToProps
 )(AllCard)
